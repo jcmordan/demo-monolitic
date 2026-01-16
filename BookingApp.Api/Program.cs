@@ -3,7 +3,6 @@ using BookingApp.Core.Interfaces;
 using BookingApp.Core.Services;
 using BookingApp.Infrastructure.Data;
 using BookingApp.Infrastructure.Repositories;
-using BookingApp.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

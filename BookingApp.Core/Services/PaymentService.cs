@@ -2,7 +2,7 @@ using BookingApp.Core.Dtos;
 using BookingApp.Core.Entities;
 using BookingApp.Core.Interfaces;
 
-namespace BookingApp.Infrastructure.Services;
+namespace BookingApp.Core.Services;
 
 public class PaymentService : IPaymentService
 {

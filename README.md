@@ -8,8 +8,39 @@ The application is built using a clean, layered monolithic architecture:
 
 ![Architecture Diagram](assets/architecture_diagram.png)
 
+### Detailed Component Architecture
+
+![Detailed Architecture Diagram](assets/architecture_diagram_detailed.png)
+
 ### Component Diagram (Mermaid)
 
+```mermaid
+graph TD
+    subgraph API_Layer ["API Layer (BookingApp.Api)"]
+        direction TB
+        C["Controllers<br/>(Bookings, Payments, Rooms, Auth, Users)"]
+        P["Program.cs / DI"]
+    end
+
+    subgraph Core_Layer ["Core Layer (BookingApp.Core)"]
+        direction TB
+        E["Entities<br/>(Booking, Payment, Room, User)"]
+        D["DTOs / ServiceResults"]
+        SI["Interfaces<br/>(IRepository, IService)"]
+        CS["Business Services<br/>(Booking, Payment, Room, User, Jwt, Crypto)"]
+    end
+
+    subgraph Infra_Layer ["Infrastructure Layer (BookingApp.Infrastructure)"]
+        direction TB
+        DB["BookingDbContext"]
+        R["Repositories<br/>(Booking, Payment, Room, User)"]
+    end
+
+    API_Layer --> Core_Layer
+    API_Layer --> Infra_Layer
+    Infra_Layer --> Core_Layer
+    Infra_Layer --> DB_Store[("In-Memory DB")]
+```
 
 ### Key Architectural Patterns
 
@@ -17,12 +48,15 @@ The application is built using a clean, layered monolithic architecture:
 - **Repository Pattern**: Decouples business logic from data access details.
 - **Dependency Injection**: Centralized service registration and resolution.
 - **JWT Authentication**: Secure user sessions using token-based auth.
+- **Result Pattern**: Uniform service responses with `ServiceResult<T>`.
 
 ## Features
 
 - [x] User registration & Login (JWT)
 - [x] Room Management (CRUD)
 - [x] Room Booking & Cancellation
+- [x] Payment Management & Tracking
+- [x] Advanced Validation (Overlaps & Integrity)
 - [x] Automated Notifications (Console)
 
 ## How to Run

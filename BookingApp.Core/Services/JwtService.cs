@@ -6,7 +6,7 @@ using BookingApp.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace BookingApp.Infrastructure.Services;
+namespace BookingApp.Core.Services;
 
 public class JwtService : IJwtService
 {

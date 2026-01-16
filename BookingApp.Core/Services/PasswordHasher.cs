@@ -2,7 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 using BookingApp.Core.Interfaces;
 
-namespace BookingApp.Infrastructure.Services;
+namespace BookingApp.Core.Services;
 
 public class PasswordHasher : IPasswordHasher
 {
