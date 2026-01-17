@@ -3,23 +3,24 @@ using System.Security.Claims;
 using System.Text;
 using BookingApp.Core.Entities;
 using BookingApp.Core.Interfaces;
-using Microsoft.Extensions.Configuration;
+using BookingApp.Core.Options;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BookingApp.Core.Services;
 
 public class JwtService : IJwtService
 {
-    private readonly IConfiguration _configuration;
+    private readonly JwtOptions _options;
 
-    public JwtService(IConfiguration configuration)
+    public JwtService(IOptions<JwtOptions> options)
     {
-        _configuration = configuration;
+        _options = options.Value;
     }
 
     public string GenerateToken(User user)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? "super_secret_key_that_is_long_enough_123!"));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]
@@ -30,8 +31,8 @@ public class JwtService : IJwtService
         };
 
         var token = new JwtSecurityToken(
-            issuer: _configuration["Jwt:Issuer"],
-            audience: _configuration["Jwt:Audience"],
+            issuer: _options.Issuer,
+            audience: _options.Audience,
             claims: claims,
             expires: DateTime.Now.AddDays(1),
             signingCredentials: creds

@@ -1,6 +1,7 @@
 using System.Text;
 using BookingApp.Core.Interfaces;
 using BookingApp.Core.Services;
+using BookingApp.Core.Options;
 using BookingApp.Infrastructure.Data;
 using BookingApp.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -60,8 +61,8 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 // Auth
-var jwtSettings = builder.Configuration.GetSection("Jwt");
-var key = Encoding.UTF8.GetBytes(jwtSettings["Key"] ?? "super_secret_key_that_is_long_enough_123!");
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+var jwtOptions = builder.Configuration.GetSection("Jwt").Get<JwtOptions>() ?? new JwtOptions();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -76,9 +77,9 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings["Issuer"],
-        ValidAudience = jwtSettings["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(key)
+        ValidIssuer = jwtOptions.Issuer,
+        ValidAudience = jwtOptions.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key))
     };
 });
 
